@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Life</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin="" />
+    <link rel="stylesheet" href="./bootstrap.min.css">
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Life Expectancy</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02"
+            aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarColor02">
+            <ul class="navbar-nav mr-auto">
+                <!-- <li class="nav-item active">
+                    <a class="nav-link" href="#">Home
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Features</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Pricing</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li> -->
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="jumbotron p-3 mb-0 mt-3">
+            <p class="lead">Life Expectancy</p>
+            <hr class="my-4">
+            <p>เลือกปี อายุ และประเภทข้อมูลที่ต้องการแสดงผล</p>
+
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-form-label col-form-label">เลือกปี</label>
+                            <select class="custom-select" id="year">
+                                <option value="2552">2552</option>
+                                <option value="2553">2553</option>
+                                <option value="2554">2554</option>
+                                <option value="2555">2555</option>
+                                <option value="2556">2556</option>
+                                <option value="2557">2557</option>
+                                <option value="2558">2558</option>
+                                <option value="2559">2559</option>
+                                <option value="2560">2560</option>
+                                <option selected="2561">2561</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-form-label col-form-label">เลือกช่วงอายุ</label>
+                            <select class="custom-select" id="age">
+                                <option selected="<1">&lt;1</option>
+                                <option value="1-4">1-4</option>
+                                <option value="5-9">5-9</option>
+                                <option value="10-14">10-14</option>
+                                <option value="15-19">15-19</option>
+                                <option value="20-24">20-24</option>
+                                <option value="25-29">25-29</option>
+                                <option value="30-34">30-34</option>
+                                <option value="35-39">35-39</option>
+                                <option value="40-44">40-44</option>
+                                <option value="45-49">45-49</option>
+                                <option value="50-54">50-54</option>
+                                <option value="55-59">55-59</option>
+                                <option value="60-64">60-64</option>
+                                <option value="65-69">65-69</option>
+                                <option value="70-74">70-74</option>
+                                <option value="75-79">75-79</option>
+                                <option value="80-84">80-84</option>
+                                <option value="85+">85+</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-form-label col-form-label">เลือกโรค</label>
+                            <select class="custom-select" id="cause">
+                                <option value="le52">Life Expectancy (LE)</option>
+                                <option value="le52_stk">LE-Stroke</option>
+                                <option value="lk52_hart">LE-Heart</option>
+                                <option value="le52_acc"> LE-RTI</option>
+                                <option value="le52_lica">LE-LiverCA</option>
+                                <option value="le52_dm">LE-DM</option>
+                                <option value="le61">LE61</option>
+                                <option value="stk">Stk</option>
+                                <option value="cvd">CVD</option>
+                                <option value="rti">RTI</option>
+                                <option value="livca">LIVCA</option>
+                                <option value="dm">DM</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="card">
+                    <div class="card-body p-0">
+                        <div id="map1"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-form-label col-form-label">เลือกปี</label>
+                            <select class="custom-select" id="year2">
+                                <option value="2552">2552</option>
+                                <option value="2553">2553</option>
+                                <option value="2554">2554</option>
+                                <option value="2555">2555</option>
+                                <option value="2556">2556</option>
+                                <option value="2557">2557</option>
+                                <option value="2558">2558</option>
+                                <option value="2559">2559</option>
+                                <option value="2560">2560</option>
+                                <option selected="2561">2561</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-form-label col-form-label">เลือกช่วงอายุ</label>
+                            <select class="custom-select" id="age2">
+                                <option selected="<1">&lt;1</option>
+                                <option value="1-4">1-4</option>
+                                <option value="5-9">5-9</option>
+                                <option value="10-14">10-14</option>
+                                <option value="15-19">15-19</option>
+                                <option value="20-24">20-24</option>
+                                <option value="25-29">25-29</option>
+                                <option value="30-34">30-34</option>
+                                <option value="35-39">35-39</option>
+                                <option value="40-44">40-44</option>
+                                <option value="45-49">45-49</option>
+                                <option value="50-54">50-54</option>
+                                <option value="55-59">55-59</option>
+                                <option value="60-64">60-64</option>
+                                <option value="65-69">65-69</option>
+                                <option value="70-74">70-74</option>
+                                <option value="75-79">75-79</option>
+                                <option value="80-84">80-84</option>
+                                <option value="85+">85+</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-form-label col-form-label">เลือกโรค</label>
+                            <select class="custom-select" id="cause2">
+                                <option value="le52">Life Expectancy (LE)</option>
+                                <option value="le52_stk">LE-Stroke</option>
+                                <option value="lk52_hart">LE-Heart</option>
+                                <option value="le52_acc"> LE-RTI</option>
+                                <option value="le52_lica">LE-LiverCA</option>
+                                <option value="le52_dm">LE-DM</option>
+                                <option value="le61">LE61</option>
+                                <option value="stk">Stk</option>
+                                <option value="cvd">CVD</option>
+                                <option value="rti">RTI</option>
+                                <option value="livca">LIVCA</option>
+                                <option value="dm">DM</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body p-0">
+                        <div id="map2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>copyright <a href="http://odpc2.ddc.moph.go.th/odpc2/" rel="nofollow">สคร.2</a> Dev by rti2dss team<a
+                    href="https://rti2dss.com/" rel="nofollow">
+        </footer>
+
+    </div>
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
+    <script src="./app.js"></script>
+</body>
+
+</html>
