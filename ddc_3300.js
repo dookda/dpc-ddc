@@ -1,5 +1,3 @@
-var https = require('https');
-var fs = require('fs');
 const express = require('express');
 const app = express();
 
@@ -26,7 +24,7 @@ app.use(bodyParser.urlencoded({
 
 // var server = https.createServer(https_options, app);
 var port = process.env.PORT || 3300;
-server.listen(port, function () {
+app.listen(port, function () {
     console.log('listening on port ' + port);
 });
 
