@@ -9,7 +9,7 @@ app.get("/api/getdata/:year/:age/:cause", async (req, res) => {
     const cause = req.params.cause;
     const sql = `SELECT v.${cause} as cause, ST_AsGeoJSON(geom) as geometry
                 FROM r506code_sim_4326 g
-                LEFT JOIN (SELECT * FROM le_hale_5261 WHERE year = ${year} AND agegroup = '${age}') as v
+                LEFT JOIN (SELECT * FROM le_14092022 WHERE year = ${year} AND agegroup = '${age}') as v
                 ON g.province_t = v.province`;
     // console.log(sql)
     let jsonFeatures = [];
