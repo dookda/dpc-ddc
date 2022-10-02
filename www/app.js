@@ -95,7 +95,7 @@ function highlightFeature(e) {
 
     layer.setStyle({
         weight: 5,
-        color: '#666',
+        color: '#34e5eb',
         dashArray: '',
         fillOpacity: 0.8
     });
@@ -197,7 +197,7 @@ function highlightFeature2(e) {
 
     layer.setStyle({
         weight: 5,
-        color: '#666',
+        color: '#34e5eb',
         dashArray: '',
         fillOpacity: 0.9
     });
