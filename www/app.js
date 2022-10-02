@@ -24,9 +24,9 @@ function updateInfo() {
     };
 
     info.update = function (props) {
-
         let causeTxt = $("#cause option:selected").text();
-        this._div.innerHTML = '<h4>' + causeTxt + '</h4>' + (props ?
+        let yearTxt = $("#year option:selected").text();
+        this._div.innerHTML = '<h4>' + causeTxt + ' ' + yearTxt + '</h4>' + (props ?
             '<b>' + props.province + ': ' + props.cause.toFixed(1) + ' ปี' : 'Hover over a province');
     };
 
@@ -143,9 +143,9 @@ function updateInfo2() {
     };
 
     info2.update = function (props) {
-
         let cause2Txt = $("#cause2 option:selected").text();
-        this._div.innerHTML = '<h4>' + cause2Txt + '</h4>' + (props ?
+        let year2Txt = $("#year2 option:selected").text();
+        this._div.innerHTML = '<h4>' + cause2Txt + ' ' + year2Txt + '</h4>' + (props ?
             '<b>' + props.province + ': ' + props.cause.toFixed(1) + ' ปี' : 'Hover over a province');
     };
     info2.addTo(map2);
