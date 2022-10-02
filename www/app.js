@@ -13,78 +13,56 @@ var cartoDB = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager
 
 cartoDB.addTo(map);
 
-
-let year = $("#year option:selected").text();
-let age = $("#age option:selected").text();
-let cause = $("#cause option:selected").text();
-let causeVal = $("#cause option:selected").val();
-
-getData(year, age, causeVal)
-
-$("#year").change(function () {
-    year = $("#year option:selected").val();
-    getData(year, age, causeVal)
-})
-
-$("#age").change(function () {
-    age = $("#age option:selected").val();
-    getData(year, age, causeVal)
-})
-
-$("#cause").change(function () {
-    cause = $("#cause option:selected").text();
-    causeVal = $("#cause option:selected").val();
-    getData(year, age, causeVal)
-})
-
 var geojson;
+var info = L.control();
+function updateInfo() {
+    info.remove()
+    info.onAdd = function (map) {
+        this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+        this.update();
+        return this._div;
+    };
 
-function getData(y, a, c) {
-    rmLyr();
+    info.update = function (props) {
 
-    $.get(`https://rti2dss.com/p3300/api/getdata/${y}/${a}/${c}`).done(r => {
-        geojson = L.geoJson(r.features, {
-            name: 'lyr1',
-            style: style,
-            onEachFeature: onEachFeature
-        }).addTo(map);
-    })
+        let causeTxt = $("#cause option:selected").text();
+        this._div.innerHTML = '<h4>' + causeTxt + '</h4>' + (props ?
+            '<b>' + props.province + ': ' + props.cause.toFixed(1) + ' ปี' : 'Hover over a province');
+    };
+
+    info.addTo(map);
 }
 
-var info = L.control();
-
-info.onAdd = function (map) {
-    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
-    this.update();
-    return this._div;
-};
-
-// method that we will use to update the control based on feature properties passed
-info.update = function (props) {
-    this._div.innerHTML = '<h4>Life</h4>' + (props ?
-        '<b>' + cause + ': ' + props.cause.toFixed(1) + ' ปี' : 'Hover over a province');
-};
-
-info.addTo(map);
-
 var legend = L.control({ position: 'bottomright' });
+var grades;
 
-legend.onAdd = function (map) {
+function getColor(d) {
+    // console.log(grades);
+    return d > grades[5] ? '#196F3D' :
+        d > grades[4] ? '#229954' :
+            d > grades[3] ? '#52BE80' :
+                d > grades[2] ? '#F9E79F' :
+                    d > grades[1] ? '#F8C471' :
+                        '#E67E22';
+}
 
-    var div = L.DomUtil.create('div', 'info legend'),
-        grades = [0, 10, 20, 30, 40, 50, 60, 70, 80],
-        labels = [];
+function setLegend1() {
+    legend.remove()
+    legend.onAdd = function (map) {
 
-    for (var i = 0; i < grades.length; i++) {
-        div.innerHTML +=
-            '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
-            grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
-    }
+        var div = L.DomUtil.create('div', 'info legend')
 
-    return div;
-};
+        for (var i = 0; i < grades.length; i++) {
+            div.innerHTML +=
+                '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+                (grades[i]).toFixed(0) + (grades[i + 1] ? '&ndash;' + (grades[i + 1]).toFixed(0) + '<br>' : '+');
+        }
 
-legend.addTo(map);
+        return div;
+    };
+    legend.addTo(map);
+    updateInfo()
+}
 
 function rmLyr() {
     map.eachLayer(lyr => {
@@ -93,29 +71,6 @@ function rmLyr() {
             map.removeLayer(lyr)
         }
     })
-}
-
-function getColor(d) {
-    return d > 80 ? '#196F3D' :
-        d > 70 ? '#229954' :
-            d > 60 ? '#52BE80' :
-                d > 50 ? '#A9DFBF' :
-                    d > 40 ? '#D5F5E3' :
-                        d > 30 ? '#FCF3CF' :
-                            d > 20 ? '#F9E79F' :
-                                d > 10 ? '#F8C471' :
-                                    '#E67E22';
-}
-
-function style(f) {
-    return {
-        fillColor: getColor(f.properties.cause),
-        weight: 2,
-        opacity: 1,
-        color: 'white',
-        dashArray: '3',
-        fillOpacity: 0.8
-    };
 }
 
 function onEachFeature(feature, layer) {
@@ -165,46 +120,12 @@ var cartoDB2 = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyage
 
 cartoDB2.addTo(map2)
 
-let year2 = $("#year2 option:selected").val();
-let age2 = $("#age2 option:selected").val();
-let cause2 = $("#cause2 option:selected").text();
-let cause2Val = $("#cause2 option:selected").val();
-console.log(cause2Val)
 
-getData2(year2, age2, cause2Val)
-
-$("#year2").change(function () {
-    year2 = $("#year2 option:selected").val();
-    getData2(year2, age2, cause2Val)
-})
-
-$("#age2").change(function () {
-    age2 = $("#age2 option:selected").val();
-    getData2(year2, age2, cause2Val)
-})
-
-$("#cause2").change(function () {
-    cause2 = $("#cause2 option:selected").text();
-    cause2Val = $("#cause2 option:selected").val();
-    getData2(year2, age2, cause2Val)
-})
 
 var geojson2;
 
-function getData2(y, a, c) {
-    rmLyr2();
-    $.get(`https://rti2dss.com/p3300/api/getdata/${y}/${a}/${c}`).done(r => {
-        geojson2 = L.geoJson(r.features, {
-            name: 'lyr2',
-            style: style,
-            onEachFeature: onEachFeature2
-        }).addTo(map2);
-    })
-}
-
 function rmLyr2() {
     map2.eachLayer(lyr => {
-        console.log(lyr)
         if (lyr.options.name == 'lyr2') {
             map2.removeLayer(lyr)
         }
@@ -213,38 +134,46 @@ function rmLyr2() {
 
 var info2 = L.control();
 
-info2.onAdd = function (map2) {
-    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
-    this.update();
-    return this._div;
-};
+function updateInfo2() {
+    info2.remove()
+    info2.onAdd = function (map2) {
+        this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+        this.update();
+        return this._div;
+    };
 
-// method that we will use to update the control based on feature properties passed
-info2.update = function (props) {
-    this._div.innerHTML = '<h4>Life</h4>' + (props ?
-        '<b>' + cause2 + ': ' + props.cause.toFixed(1) + ' ปี' : 'Hover over a province');
-};
+    info2.update = function (props) {
 
-info2.addTo(map2);
+        let cause2Txt = $("#cause2 option:selected").text();
+        this._div.innerHTML = '<h4>' + cause2Txt + '</h4>' + (props ?
+            '<b>' + props.province + ': ' + props.cause.toFixed(1) + ' ปี' : 'Hover over a province');
+    };
+    info2.addTo(map2);
+}
+
 
 var legend2 = L.control({ position: 'bottomright' });
 
-legend2.onAdd = function (map2) {
+function setLegend2() {
+    legend2.remove()
+    console.log(grades);
+    legend2.onAdd = function (map2) {
+        var div2 = L.DomUtil.create('div', 'info legend'),
+            // grades = g,
+            labels = [];
 
-    var div2 = L.DomUtil.create('div', 'info legend'),
-        grades = [0, 10, 20, 30, 40, 50, 60, 70, 80],
-        labels = [];
+        for (var i = 0; i < grades.length; i++) {
+            div2.innerHTML +=
+                '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+                (grades[i]).toFixed(0) + (grades[i + 1] ? '&ndash;' + (grades[i + 1]).toFixed(0) + '<br>' : '+');
+        }
 
-    for (var i = 0; i < grades.length; i++) {
-        div2.innerHTML +=
-            '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
-            grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
-    }
+        return div2;
+    };
 
-    return div2;
-};
-
-legend2.addTo(map2);
+    legend2.addTo(map2);
+    updateInfo2()
+}
 
 function onEachFeature2(feature, layer) {
     layer.on({
@@ -279,3 +208,79 @@ function highlightFeature2(e) {
 
     info2.update(layer.feature.properties);
 }
+
+/////
+
+async function getArr(arr1, arr2) {
+    let datArr3 = []
+    await arr1.filter(i => i.properties.cause !== null).map(x => datArr3.push(x.properties.cause))
+    await arr2.filter(i => i.properties.cause !== null).map(x => datArr3.push(x.properties.cause))
+
+    let min = Math.min(...datArr3)
+    let max = Math.max(...datArr3)
+
+    let intv = (max - min) / 5
+    grades = [min];
+    let i = 1
+    while (i <= 5) {
+        grades.push(min + (intv * i))
+        i++
+    }
+    setLegend1()
+    setLegend2()
+
+
+    geojson = await L.geoJson(arr1, {
+        name: 'lyr1',
+        style: function (f) {
+            return {
+                fillColor: getColor(f.properties.cause),
+                weight: 2,
+                opacity: 1,
+                color: 'white',
+                dashArray: '3',
+                fillOpacity: 0.8
+            };
+        },
+        onEachFeature: onEachFeature
+    }).addTo(map);
+
+    geojson2 = await L.geoJson(arr2, {
+        name: 'lyr2',
+        style: function (f) {
+            return {
+                fillColor: getColor(f.properties.cause),
+                weight: 2,
+                opacity: 1,
+                color: 'white',
+                dashArray: '3',
+                fillOpacity: 0.8
+            };
+        },
+        onEachFeature: onEachFeature2
+    }).addTo(map2);
+}
+
+function getData() {
+    let y = $("#year option:selected").text();
+    let a = $("#age option:selected").text();
+    let c = $("#cause option:selected").val();
+
+    let y2 = $("#year2 option:selected").val();
+    let a2 = $("#age2 option:selected").val();
+    let c2 = $("#cause2 option:selected").val();
+
+    rmLyr();
+    rmLyr2();
+    let url = 'https://rti2dss.com/p3300'
+    // let url = "http://localhost:3300"
+    $.get(`${url}/api/getdata/${y}/${a}/${c}`).done(r1 => {
+        $.get(`${url}/api/getdata/${y2}/${a2}/${c2}`).done(r2 => {
+            getArr(r1.features, r2.features)
+
+        })
+    })
+
+}
+
+getData()
