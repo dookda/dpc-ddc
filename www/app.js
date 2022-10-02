@@ -156,7 +156,7 @@ var legend2 = L.control({ position: 'bottomright' });
 
 function setLegend2() {
     legend2.remove()
-    console.log(grades);
+    // console.log(grades);
     legend2.onAdd = function (map2) {
         var div2 = L.DomUtil.create('div', 'info legend'),
             // grades = g,
