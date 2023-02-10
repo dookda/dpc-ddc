@@ -1,3 +1,4 @@
+CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;
 --
 -- PostgreSQL database dump
 --

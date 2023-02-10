@@ -16,8 +16,8 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
-app.listen(3300, () => {
-    console.log('running on http://localhost:3300')
+app.listen(3000, () => {
+    console.log('running on http://localhost:3000')
 });
 
 app.use(express.static(__dirname + '/www'));

@@ -272,10 +272,11 @@ function getData() {
 
     rmLyr();
     rmLyr2();
+
     let url = 'https://rti2dss.com/p3300'
     // let url = "http://localhost:3300"
-    $.get(`${url}/api/getdata/${y}/${a}/${c}`).done(r1 => {
-        $.get(`${url}/api/getdata/${y2}/${a2}/${c2}`).done(r2 => {
+    $.get(`/api/getdata/${y}/${a}/${c}`).done(r1 => {
+        $.get(`/api/getdata/${y2}/${a2}/${c2}`).done(r2 => {
             getArr(r1.features, r2.features)
 
         })
