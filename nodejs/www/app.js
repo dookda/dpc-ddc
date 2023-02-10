@@ -151,7 +151,7 @@ function updateInfo2() {
     info2.addTo(map2);
 }
 
-
+// test
 var legend2 = L.control({ position: 'bottomright' });
 
 function setLegend2() {
