@@ -1,0 +1,29 @@
+version: '3.3'
+services:
+  postgis:
+    image: postgis/postgis
+    container_name: le_postgis
+    restart: always
+    environment:
+      - POSTGRES_DB=ddc
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1234
+    volumes:
+      - ./postgis/:/docker-entrypoint-initdb.d
+    ports:
+      - 5433:5432
+
+  nodejs:
+    image: node
+    container_name: le_nodejs
+    working_dir: /app/nodejs
+    restart: always
+    depends_on:
+      - postgis
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./nodejs:/app/nodejs
+    ports:
+      - 3000:3000
+    command: bash -c "npm i && npm i -g nodemon && nodemon server.js"
